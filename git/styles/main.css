@@ -214,11 +214,17 @@ footer {
     gap: 15px;
 }
 
-footer img {
-    height: 100%;
-}
 
 footer h4 {
     width: 50%;
     font-weight: 400;
+}
+
+img {
+  width: 75%;
+}
+
+footer img {
+  height: 100%;
+  width: auto;
 }
