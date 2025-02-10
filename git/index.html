@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles/main.css" />
+    <title>Cisco Packet Tracer Guide</title>
+  </head>
+  <body>
+    <header>
+      <div class="tittel">
+        <h1>Cisco Packet Tracer Guide</h1>
+        <h2>Utfyllende Oppsett av LAN med DNS og DHCP</h2>
+      </div>
+      <div class="tekst">
+        <h4>
+          Cisco Packet Tracer er et kraftig verktøy for å lære
+          nettverkskonfigurasjon. Denne guiden tar deg gjennom oppsettet av et
+          lokalnettverk (LAN) med tre datamaskiner, en DNS-server for
+          navneoversettelse, og en DHCP-server for automatisk IP-tildeling. Vi
+          dekker både grunnleggende og avanserte trinn, inkludert feilsøking og
+          teoretisk forståelse.
+        </h4>
+        <br />
+        <h3>Forutsetninger</h3>
+        <h4>
+          <span>Grunnleggende nettverkskunnskap</span>: Forståelse av
+          IP-adresser, subnett og klient-server-modellen.
+        </h4>
+        <h4>
+          <span>Installert Cisco Packet Tracer</span>: Last ned fra
+          <a href="https://www.netacad.com/">NetAcad</a>
+        </h4>
+        <h4>
+          <span>Familiært med grensesnittet</span>: Kjennskap til verktøy som
+          "End Devices", "Switcher", og kabeltyper
+        </h4>
+      </div>
+    </header>
+    <section>
+      <div class="main-container">
+        <!-- Trinn 1 -->
+        <div id="trinn1">
+          <h2>Trinn 1: Opprett et Fysisk Nettverk</h2>
+          <br />
+          <h3>1.1 Bygg nettverkstopologien</h3>
+          <ul>
+            <li>Åpne Packet Tracer og velg et tomt prosjekt</li>
+            <li>
+              Dra inn enheter fra paletten:
+              <ul>
+                <li>
+                  <span>1 x Switch</span>: Bruk en 2960-modell (under
+                  "Switches").
+                </li>
+                <li>
+                  <span>3 x PC-er</span>: Under "End Devices" → "Desktop".
+                </li>
+                <li>
+                  <span>1 x Generisk server</span>: Under "End Devices" →
+                  "Server".
+                </li>
+              </ul>
+            </li>
+            <li>
+              <span>Plassering</span>: Organiser enhetene slik at switchen er i
+              midten, PC-ene til venstre, og serveren til høyre
+            </li>
+          </ul>
+          <br />
+          <h3>1.2 Koble enhetene</h3>
+          <ul>
+            <li>
+              <span>Bruk "Straight-Through"-kabler</span> (lyseblå) for å koble
+              PC-ene og serveren til switchen:
+              <ul>
+                <li>
+                  Klikk på <span>kabelikonet</span> → Velg "Straight-Through".
+                </li>
+                <li>
+                  Koble hver PC til switchens
+                  <span>FastEthernet-porter</span> (f.eks. PC1 → Fa0/1, PC2 →
+                  Fa0/2, PC3 → Fa0/3).
+                </li>
+                <li>Koble serveren til <span>Fa0/4</span></li>
+              </ul>
+            </li>
+          </ul>
+          <h3>Hvorfor Straight-Through?</h3>
+          <h4>
+            Denne kabeltypen brukes mellom ulike enheter (f.eks. PC til switch).
+            Hadde vi koblet switch til switch, ville vi brukt
+            <span>"Crossover"</span>-kabler. Du kan også bruke
+            <span>"automatically choose connection cable"</span> som er anbefalt
+            for begynnere.
+          </h4>
+        </div>
+
+        <!-- Trinn 2 -->
+        <div id="trinn2">
+          <h2>Trinn 2: Konfigurer Statiske IP-adresser (Midlertidig)</h2>
+          <h4>
+            Før vi aktiverer DHCP, må serveren og PC-ene ha IP-adresser for å
+            kommunisere.
+          </h4>
+          <br />
+          <h3>2.1 Tildel IP til serveren</h3>
+          <ul>
+            <li>Klikk på serveren → Åpne <span>"Config"</span>-fanen.</li>
+            <li>
+              Under <span>"Settings"</span>:
+              <ul>
+                <li>
+                  <strong>Default Gateway</strong>: La stå tomt (vi bruker ikke
+                  router her).
+                </li>
+                <li>
+                  <strong>DNS Server</strong>: Angi
+                  <code>192.168.1.100</code> (serverens egen IP).
+                </li>
+              </ul>
+            </li>
+            <li>
+              For å sette IP-adressen og subnettmasken, gå til
+              <span>"Interfaces"</span> → <span>"FastEthernet0"</span>:
+              <ul>
+                <li>IP Address: <code>192.168.1.100</code></li>
+                <li>Subnet Mask: <code>255.255.255.0</code></li>
+              </ul>
+            </li>
+          </ul>
+          <h3>2.2 Tildel IP til PC-ene</h3>
+          <ul>
+            <li>
+              Åpne hver PC → Gå til <span>"Desktop"</span>-fanen →
+              <span>"IP Configuration"</span>
+            </li>
+            <li>
+              Velg <span>"Static"</span> og angi:
+              <ul>
+                <li>
+                  <strong>PC1</strong>:
+                  <ul>
+                    <li>IP: <code>192.168.1.10</code></li>
+                    <li>Subnettmaske: <code>255.255.255.0</code></li>
+                    <li>DNS-server: <code>192.168.1.100</code></li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>PC2</strong>:
+                  <ul>
+                    <li>IP: <code>192.168.1.11</code></li>
+                    <li>Subnettmaske: <code>255.255.255.0</code></li>
+                    <li>DNS-server: <code>192.168.1.100</code></li>
+                  </ul>
+                </li>
+                <li>
+                  <strong>PC3</strong>:
+                  <ul>
+                    <li>IP: <code>192.168.1.12</code></li>
+                    <li>Subnettmaske: <code>255.255.255.0</code></li>
+                    <li>DNS-server: <code>192.168.1.100</code></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Trinn 3 -->
+        <div id="trinn3">
+          <h2>Trinn 3: Konfigurer DNS-serveren</h2>
+          <h4>
+            DNS (Domain Name System) oversetter domenenavn til IP-adresser.
+          </h4>
+
+          <h3>3.1 Aktiver DNS på serveren</h3>
+          <ul>
+            <li>
+              Åpne serveren → Gå til <span>"Services"</span>-fanen →
+              <span>"DNS"</span>
+            </li>
+            <li>Slå på <span>"DNS Service"</span></li>
+            <li>
+              Legg til <span>"A Records"</span>:
+              <div class="code-block">
+                <pre>
+| Navn       | IP-adresse    |
+|------------|---------------|
+| pc1.lokal  | 192.168.1.10  |
+| pc2.lokal  | 192.168.1.11  |
+| pc3.lokal  | 192.168.1.12  |</pre
+                >
+              </div>
+            </li>
+          </ul>
+
+          <h3>3.2 Test DNS fra en PC</h3>
+          <ul>
+            <li>Åpne PC1 → <span>"Command Prompt"</span></li>
+            <li>
+              Skriv:
+              <div class="code-block">
+                <code>ping pc2.lokal</code>
+              </div>
+              Forventet resultat: Svar fra <code>192.168.1.11</code>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Trinn 4 -->
+        <div id="trinn4">
+          <h2>Trinn 4: Konfigurer DHCP-serveren</h2>
+
+          <h3>4.1 Aktiver DHCP på serveren</h3>
+          <ul>
+            <li>
+              Åpne serveren → <span>"Services"</span> → <span>"DHCP"</span>
+            </li>
+            <li>Slå på <span>"DHCP Service"</span></li>
+            <li>
+              Under <span>"Pool Configuration"</span>:
+              <ul>
+                <li>Pool Name: <code>LAN-Pool</code></li>
+                <li>Start IP: <code>192.168.1.50</code></li>
+                <li>Subnet Mask: <code>255.255.255.0</code></li>
+                <li>Max Users: <code>20</code></li>
+                <li>Default Gateway: <code>192.168.1.100</code></li>
+                <li>DNS Server: <code>192.168.1.100</code></li>
+              </ul>
+            </li>
+          </ul>
+
+          <h3>4.2 Aktiver DHCP på PC-ene</h3>
+          <ul>
+            <li>
+              På hver PC: Gå til <span>"IP Configuration"</span> → Velg
+              <span>"DHCP"</span>
+            </li>
+            <li>Vent 10-20 sekunder for IP-tildeling</li>
+          </ul>
+
+          <h3>4.3 Bekreft DHCP-tildeling</h3>
+          <ul>
+            <li>Åpne <span>PC1 → "Command Prompt"</span>.</li>
+            <li>
+              Skriv i CMD:
+              <ul>
+                <li><code>ipconfig</code></li>
+                <li>
+                  Sjekk at IP-adressen er innenfor
+                  <code>192.168.1.50-192.168.1.70.</code>
+                </li>
+                <li>Bekreft at "DHCP Server" er <code>192.168.1.100</code></li>
+              </ul>
+            </li>
+          </ul>
+          <h3>Feilsøking</h3>
+          <h4>
+            Hvis PC-ene ikke får IP: Sjekk om DHCP-poolen ikke overlapper med
+            statiske IP-er (.<code>10</code> - .<code>12</code> ).
+          </h4>
+          <h4>Restart DHCP-tjenesten på serveren hvis nødvendig</h4>
+        </div>
+
+        <div id="trinn5">
+          <h2>Trinn 5: Test Hele Nettverket</h2>
+          <br />
+          <h3>5.1 Kommuniser mellom PC-en</h3>
+          <ul>
+            <li>
+              Fra <span>PC1</span> (DHCP-tildelt IP), ping
+              <code>pc3.lokal</code>
+            </li>
+            <div class="code-block">
+              <code>ping pc3.lokal</code>
+            </div>
+            <li>
+              Fra PC2, åpne en nettleser og prøv å nå en nettside (selv om dette
+              ikke vil fungere uten ekstern tilkobling)
+            </li>
+          </ul>
+          <h3>5.2 Simuler trafikk</h3>
+          <ul>
+            <li>Gå til "Simulation Mode" (klokkeikonet øverst)</li>
+            <li>
+              Send en "PDU" (Protocol Data Unit) fra PC1 til PC3 for å se
+              hvordan pakker flyter gjennom switchen
+            </li>
+          </ul>
+        </div>
+
+        <div id="tips">
+          <h2>Avanserte Tips</h2>
+          <br />
+          <h3>Reserver IP-adresser i DHCP</h3>
+          <ul>
+            <li>
+              I DHCP-konfigurasjonen kan du reservere spesifikke IP-er til
+              bestemte MAC-adresser (f.eks. for en skriver).
+            </li>
+          </ul>
+          <h3>Bruk av router for internettilgang</h3>
+          <ul>
+            <li>
+              Legg til en router og konfigurer NAT (Network Address Translation)
+              for å gi LAN tilgang til eksterne nett
+            </li>
+          </ul>
+          <h3>Sikkerhet</h3>
+          <ul>
+            <li>
+              Aktiver port security på switchen for å begrense hvilke
+              MAC-adresser som kan koble til
+            </li>
+          </ul>
+          <h3>Oppgaver</h3>
+          <ul>
+            <li>
+              Utforsk Packet Tracer-oppgaver på Cisco NetAcad for mer praksis
+            </li>
+          </ul>
+        </div>
+
+        <div id="feil-og-løsninger">
+          <h2>Vanlige Feil og Løsninger</h2>
+          <div class="feil-container">
+            <!-- Feil 1 -->
+            <div class="feil">
+              <h3>Feil: PC-ene får ikke IP fra DHCP</h3>
+              <ul>
+                <li>
+                  <strong>Løsning 1</strong>: Sjekk om DHCP er aktivert på
+                  serveren.
+                </li>
+                <li>
+                  <strong>Løsning 2</strong>: Sjekk at IP-poolen ikke overlapper
+                  med statiske adresser.
+                </li>
+                <li>
+                  <strong>Løsning 3</strong>: Restart DHCP-tjenesten på
+                  serveren.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Feil 2 -->
+            <div class="feil">
+              <h3>Feil: DNS-navn oversettes ikke</h3>
+              <ul>
+                <li>
+                  <strong>Løsning 1</strong>: Bekreft at "A Records" er lagt til
+                  på DNS-serveren.
+                </li>
+                <li>
+                  <strong>Løsning 2</strong>: Sjekk at PC-ene peker på riktig
+                  DNS-server.
+                </li>
+                <li>
+                  <strong>Løsning 3</strong>: Sjekk at DNS-tjenesten er aktivert
+                  på serveren.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Feil 3 -->
+            <div class="feil">
+              <h3>Feil: Ingen kommunikasjon mellom PC-er</h3>
+              <ul>
+                <li>
+                  <strong>Løsning 1</strong>: Sjekk kabeltilkoblinger (bruk
+                  "Automatic" i stedet for "Straight-Through" hvis usikker).
+                </li>
+                <li>
+                  <strong>Løsning 2</strong>: Sjekk at alle enheter er i samme
+                  subnet (<code>192.168.1.0/24</code>).
+                </li>
+                <li>
+                  <strong>Løsning 3</strong>: Sjekk at IP-adressene er unike og
+                  ikke overlapper.
+                </li>
+              </ul>
+            </div>
+
+            <!-- Feil 4 -->
+            <div class="feil">
+              <h3>Feil: Serveren svarer ikke</h3>
+              <ul>
+                <li>
+                  <strong>Løsning 1</strong>: Sjekk at serveren er riktig
+                  konfigurert med IP og subnettmaske.
+                </li>
+                <li>
+                  <strong>Løsning 2</strong>: Sjekk at serveren er koblet til
+                  switchen med riktig kabeltype.
+                </li>
+                <li>
+                  <strong>Løsning 3</strong>: Restart serveren i Packet Tracer.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="ordliste">
+          <h2>Ordliste</h2>
+          <table class="glossary">
+            <thead>
+              <tr>
+                <th>Begrep</th>
+                <th>Forklaring</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LAN</td>
+                <td>
+                  Lokalt nettverk (Local Area Network) som kobler enheter i et
+                  begrenset område.
+                </td>
+              </tr>
+              <tr>
+                <td>DNS</td>
+                <td>
+                  Domain Name System: Oversetter domenenavn (f.eks. google.com)
+                  til IP-adresser.
+                </td>
+              </tr>
+              <tr>
+                <td>DHCP</td>
+                <td>
+                  Dynamic Host Configuration Protocol: Tildeler automatisk
+                  IP-adresser til enheter.
+                </td>
+              </tr>
+              <tr>
+                <td>IP-adresse</td>
+                <td>
+                  Unik identifikator for en enhet på nettverket (f.eks.
+                  192.168.1.10).
+                </td>
+              </tr>
+              <tr>
+                <td>Subnettmaske</td>
+                <td>
+                  Bestemmer hvilken del av IP-adressen som angir nettverket og
+                  enheten.
+                </td>
+              </tr>
+              <tr>
+                <td>Gateway</td>
+                <td>
+                  Enhet (f.eks. router) som kobler nettverket til eksterne nett.
+                </td>
+              </tr>
+              <tr>
+                <td>Switch</td>
+                <td>
+                  Nettverksenhet som kobler flere enheter i et LAN og sender
+                  data til riktig mottaker.
+                </td>
+              </tr>
+              <tr>
+                <td>MAC-adresse</td>
+                <td>
+                  Unik identifikator for hvert nettverkskort (f.eks.
+                  70:10:6F:AA:BB:CC).
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <img src="./images/simon.jpg" alt="Forfatter av siden Simon Tijanic" />
+      <h4>
+        Du har nå et fullt funksjonelt LAN med automatisk IP-tildeling (DHCP) og
+        navneoversettelse (DNS). Dette nettverket kan utvides med tjenester som
+        webtjenester, e-postservere eller tilkobling til internett via en
+        router.
+      </h4>
+      <br />
+    </footer>
+  </body>
+</html>
