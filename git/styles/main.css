@@ -229,6 +229,10 @@ footer img {
   width: auto;
 }
 
+video {
+  width: 100%;
+}
+
 @media screen and (max-width: 768px) {
   header {
     gap: 44px;
@@ -251,7 +255,7 @@ footer img {
   .main-container {
     max-width: 400px;
   }
-  iframe {
+  video {
     width: 100%;
   }
 }
