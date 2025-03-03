@@ -228,3 +228,30 @@ footer img {
   height: 100%;
   width: auto;
 }
+
+@media screen and (max-width: 768px) {
+  header {
+    gap: 44px;
+  }
+  .tittel {
+    width: 80%;
+  }
+  .tittel h1 {
+    font-size: 44px;
+  }
+  .tittel h2 {
+    font-size: 24px;
+  }
+  .tekst {
+    width: 80%;
+  }
+  footer h4 {
+    width: 80%;
+  }
+  .main-container {
+    max-width: 400px;
+  }
+  iframe {
+    width: 100%;
+  }
+}
